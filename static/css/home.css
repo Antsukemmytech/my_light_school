@@ -1,0 +1,15 @@
+#hero-carousel {
+    height: 100vh;
+    margin-bottom: 0;
+}
+.carousel-inner {
+    height: 100%;
+}
+.carousel-inner img {
+    height: 100%;
+    object-fit: cover;
+}
+.carousel-caption {
+    top: 50%;
+    transform: translateY(-50%);
+}

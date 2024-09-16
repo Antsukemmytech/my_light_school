@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> My Light School</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    {% comment %} NavBar Start {% endcomment %}
+    <nav class="navbar navbar-expand-lg navbar-light-3 bg-light-3">
+        <a class="navbar-brand" href="#"> My Light School</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Admission</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Academics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">News & Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Portal</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{% comment %} NavBar End {% endcomment %}
+
+    {% comment %} Hero Section Start {% endcomment %}
+    <div id="hero-carousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#hero-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#hero-carousel" data-slide-to="1"></li>
+            <li data-target="#hero-carousel" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/hero1.jpeg' %}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Automated Examination Compilation</h2>
+                     <p>Easy and efficient examination management.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/hero1.jpeg' %}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5></h5>
+                    <p>Automated examination compilation and more.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/hero3.jpeg' %}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5></h5>
+                    <p>Centralized student information management.</p>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#hero-carousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#hero-carousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+   
+   
+    
+
+    {% comment %} What people are saying {% endcomment %}
+    <section class="container">
+        <h2 class="text-center mb-5">What People Are Saying About Our Software</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">"This software has revolutionized our workflow! We've increased productivity by 50%."</p>
+                        <footer class="blockquote-footer">John Doe, CEO at XYZ Corporation <cite title="Source Title">Source</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">"The automated features have saved us so much time. We can focus on more important tasks."</p>
+                        <footer class="blockquote-footer">Jane Smith, Manager at ABC Inc. <cite title="Source Title">Source</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="testimonial">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">"The software is user-friendly and easy to navigate. Our team loves it!"</p>
+                        <footer class="blockquote-footer">Bob Johnson, Team Lead at DEF Agency <cite title="Source Title">Source</cite></footer>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Footer Section -->
+<footer class="footer mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>About Us</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Mission Statement</a></li>
+                    <li><a href="#">Team Members</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Stay Connected</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
