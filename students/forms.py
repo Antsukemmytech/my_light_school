@@ -1,5 +1,5 @@
 from django import forms
-from .models import Student, Grade
+from .models import Student, Grade, StudentClass, Subject
 
 class StudentsForm(forms.ModelForm):
     class Meta:
@@ -18,8 +18,18 @@ class StudentsForm(forms.ModelForm):
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
         }
+        
+class SubjectForm(forms.ModelForm):
+    class Meta:
+        model = Subject
+        fields = ('name', 'description')
 
 class GradeForm(forms.ModelForm):
     class Meta:
         model = Grade
         fields = ('subject', 'ca1', 'ca2', 'exam')
+
+class StudentClassForm(forms.ModelForm):
+    class Meta:
+        model = StudentClass
+        fields = ('name', 'description')

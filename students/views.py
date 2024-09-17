@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from .models import Student, Grade, Subject
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import StudentsForm, GradeForm
+from .forms import StudentsForm, GradeForm, SubjectForm, StudentClassForm
 
 def home(request):
     return render(request, 'home.html' )
@@ -60,5 +60,27 @@ def report_card(request, pk):
     student = Student.objects.get(pk=pk)
     grades = Grade.objects.filter(student=student)
     return render(request, 'students/report_card.html', {'grades': grades})
+
+def add_subject(request):
+    if request.method == 'POST':
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('subjects_list')
+    else:
+        form = SubjectForm()
+    return render(request, 'add_subject.html', {'form': form})
+
+def add_student_class(request):
+    if request.method == 'POST':
+        form = StudentClassForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('student_classes_list')
+    else:
+        form = StudentClassForm()
+    return render(request, 'add_student_class.html', {'form': form})
+
+
 
 
