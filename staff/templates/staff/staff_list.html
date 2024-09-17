@@ -5,10 +5,10 @@
   <ul>
     {% for staff_member in staff %}
       <li>
-        {{ staff_member.name }} ({{ staff_member.position }})
-        <a href="{% url 'staff:detail' staff_member.pk %}">View Details</a>
-        <a href="{% url 'staff:update' staff_member.pk %}">Edit</a>
-        <a href="{% url 'staff:delete' staff_member.pk %}">Delete</a>
+        {{ staff_member.surname }} {{ staff_member.first_name}} {{ staff_member.department }} {{ staff_member.course_studied }}
+        <a href="{% url 'staff:staff_detail' staff_member.pk %}">View Details</a>
+        <a href="{% url 'staff:staff_update' staff_member.pk %}">Edit</a>
+        <a href="{% url 'staff:staff_delete' staff_member.pk %}">Delete</a>
       </li>
     {% endfor %}
   </ul>

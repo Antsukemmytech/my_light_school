@@ -6,6 +6,6 @@
   <p>Email: {{ staff.email }}</p>
   <p>Phone: {{ staff.phone }}</p>
   <p>Department: {{ staff.department }}</p>
-  <p><a href="{% url 'staff:update' staff.pk %}">Edit</a></p>
+  <p><a href="{% url 'staff:staff_update' staff.pk %}">Edit</a></p>
   <p><a href="{% url 'staff:staff_list' %}">Back to List</a></p>
 {% endblock %}

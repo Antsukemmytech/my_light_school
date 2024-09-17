@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Add Staff</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <label>Staff Email:</label>
+      {{ form.email }}
+      {{ form.email.errors }}
+    </div>
+    <div>
+      <label>Phone:</label>
+      {{ form.phone }}
+      {{ form.phone.errors }}
+    </div>
+    <div>
+      <label>Surname:</label>
+      {{ form.surname }}
+      {{ form.surname.errors }}
+    </div>
+    <div>
+      <label>First name:</label>
+      {{ form.first_name }}
+      {{ form.first_name.errors }}
+    </div>
+    <div>
+      <label>Other names:</label>
+      {{ form.other_names }}
+      {{ form.other_names.errors }}
+    </div>
+    <div>
+      <label>Department:</label>
+      {{ form.department }}
+      {{ form.department.errors }}
+    </div>
+    <div>
+      <label>Qualification:</label>
+      {{ form.qualification }}
+      {{ form.qualification.errors }}
+    </div>
+    <div>
+      <label>Course studied:</label>
+      {{ form.course_studied }}
+      {{ form.course_studied.errors }}
+    </div>
+    <div>
+      <label>Profile picture:</label>
+      {{ form.profile_picture }}
+      {{ form.profile_picture.errors }}
+    </div>
+    <div>
+      <label>Date of birth:</label>
+      {{ form.date_of_birth }}
+      {{ form.date_of_birth.errors }}
+    </div>
+    <button type="submit">Add Staff</button>
+  </form>
+ {% endblock %}

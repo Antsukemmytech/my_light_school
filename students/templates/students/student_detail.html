@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Student Details</h1>
+
+<p>Surname: {{ student_instance.surname }}</p>
+<p>First Name: {{ student_instance.first_name }}</p>
+<p>Other Names: {{ student_instance.other_names }}</p>
+<p>Session: {{ student_instance.session }}</p>
+<p>Class Admitted: {{ student_instance.class_admitted }}</p>
+<p>Profile Picture: <img src="{{ student_instance.profile_picture.url }}" width="50" height="50"></p>
+<p>Guardian Name: {{ student_instance.guardian_name }}</p>
+<p>Date of Birth: {{ student_instance.date_of_birth }}</p>
+
+{% endblock %}
