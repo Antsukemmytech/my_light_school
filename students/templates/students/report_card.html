@@ -1,0 +1,22 @@
+<table>
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>CA 1</th>
+            <th>CA 2</th>
+            <th>Exam</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for grade in grades %}
+        <tr>
+            <td>{{ grade.subject.name }}</td>
+            <td>{{ grade.ca1 }}</td>
+            <td>{{ grade.ca2 }}</td>
+            <td>{{ grade.exam }}</td>
+            <td>{{ grade.total }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

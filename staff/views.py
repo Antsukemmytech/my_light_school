@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest
 from .models import Staff
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import StaffForm
 
@@ -13,6 +14,7 @@ def staff_detail(request, pk):
     staff = get_object_or_404(Staff, pk=pk)
     return render(request, 'staff/staff_detail.html', {'staff': staff})
 
+@login_required
 def add_staff(request):
     if request.method == 'POST':
         form = StaffForm(request.POST, request.FILES)
@@ -23,6 +25,7 @@ def add_staff(request):
         form = StaffForm()
     return render(request, 'staff/add_staff.html', {'form': form})
 
+@login_required
 def staff_update(request, pk):
     staff = get_object_or_404(Staff, pk=pk)
     if request.method == 'POST':
@@ -34,6 +37,7 @@ def staff_update(request, pk):
         form = StaffForm(instance=staff)
     return render(request, 'staff/staff_form.html', {'form': form})
 
+@login_required
 def staff_delete(request, pk):
     staff = get_object_or_404(Staff, pk=pk)
     if request.method == 'POST':
