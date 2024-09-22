@@ -1,12 +1,21 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils import timezone
-from .enums import SessionChoices, SubjectTypes
+from .enums import SubjectTypes
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class StudentClass(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
     name = models.CharField(max_length=50)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+    
+    
+class Session(models.Model):
+    id = models.CharField(max_length=50, primary_key=True)
+    name = models.CharField(max_length=255)
     description = models.TextField()
 
     def __str__(self):
@@ -25,7 +34,7 @@ class Student(models.Model):
     surname = models.CharField(max_length=50)
     other_names = models.CharField(max_length=50, blank=True)
     first_name = models.CharField(max_length=50)
-    session = models.CharField(max_length=20, choices=[(c.value, c.name) for c in SessionChoices])
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE,)
     profile_picture = models.ImageField(upload_to='profile_pics/', default='default.jpg')
     guardian_name = models.CharField(max_length=100)
@@ -49,6 +58,7 @@ class Subject(models.Model):
 class Result(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
     ca1 = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(20)])
     ca2 = models.DecimalField(max_digits=5, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(20)])

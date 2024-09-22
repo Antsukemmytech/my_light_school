@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest
-from .models import Student, Subject, StudentClass, Result, SessionChoices
+from .models import Student, Subject, StudentClass, Result, Session
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import StudentsForm, SubjectForm, StudentClassForm, ResultForm
+from .forms import StudentsForm, SubjectForm, StudentClassForm, ResultForm, SessionForm
+
 
 def home(request):
     return render(request, 'home.html' )
@@ -44,19 +45,29 @@ def students_delete(request, pk):
         return redirect('students:students_list')
     return render(request, 'students/students_confirm_delete.html', {'students': student})
 
+def add_session(request):
+    if request.method == 'POST':
+        form = SessionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('sessions_list')
+    else:
+        form = SessionForm()
+    return render(request, 'add_session.html', {'form': form})
 
 def add_results(request):
     classes = StudentClass.objects.all()
     subjects = Subject.objects.all()
-    session = [(c.value, c.name) for c in SessionChoices]
-
+    session = Session.objects.all()
     if request.method == 'POST':
         class_id = request.POST.get('class')
         subject_id = request.POST.get('subject')
+        # session_id = request.Post.get('session')
 
         student_class = StudentClass.objects.get(id=class_id)
         subject = Subject.objects.get(id=subject_id)
         students = Student.objects.filter(student_class=student_class)
+        # session = Session.objects.get(id=session_id)
 
         for student in students:
             ca1 = request.POST.get(f'ca1_{student.id}')
@@ -83,7 +94,7 @@ def add_results(request):
     return render(request, 'students/add_results.html', {
         'classes': classes,
         'subjects': subjects,
-        'session': session
+        'sessions': session
     })
 
 

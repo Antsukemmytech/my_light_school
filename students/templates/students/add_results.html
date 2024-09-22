@@ -5,11 +5,11 @@
 
   <form method="post">
     {% csrf_token %}
-      <label>Session:</label>
+    <label>Session:</label>
     <select id="session" name="session">
-        {% for session in sessions %}
-            <option value="{{ session.1 }}">{{ session.0 }}</option>
-        {% endfor %}
+      {% for session in sessions %}
+        <option value="{{ session.id }}">{{ session.name }}</option>
+      {% endfor %}
     </select>
 
     <label>Class:</label>
@@ -30,12 +30,12 @@
   </form>
 
   {% if students %}
-    <h2>Students in {{ student_class.name }} - {{ subject.name }} ({{ session }})</h2>
+    <h2>Students in {{ student_class.name }} - {{ subject.name }} ({{ session.name }})</h2>
     <form method="post">
       {% csrf_token %}
       <input type="hidden" name="class" value="{{ student_class.id }}">
       <input type="hidden" name="subject" value="{{ subject.id }}">
-      <input type="hidden" name="session" value="{{ session }}">
+      <input type="hidden" name="session" value="{{ session.id }}">
 
       {% for student in students %}
         <h3>{{ student.surname }} {{ student.first_name }} {{ student.other_names }}</h3>
