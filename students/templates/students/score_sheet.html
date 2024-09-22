@@ -1,0 +1,70 @@
+{% extends 'base.html' %} 
+{% block content %} 
+<h2>Score Sheet for {{ student_class.name }} - {{ subject.name }} ({{ session.name }})</h2> 
+<form method="post"> 
+{% csrf_token %} 
+<input type="hidden" name="class" value="{{ student_class.id }}"> 
+<input type="hidden" name="subject" value="{{ subject.id }}"> 
+<input type="hidden" name="session" value="{{ session.id }}"> 
+<table> 
+<thead> 
+<tr> 
+<th>S/No</th> 
+<th>Student ID</th> 
+<th>Name</th> 
+<th>CA1</th> 
+<th>CA2</th> 
+<th>Exams</th> 
+<th>Total</th> 
+</tr> 
+</thead> 
+<tbody> 
+{% for student in students %} 
+<tr> 
+<td>{{ forloop.counter }}</td> 
+<td>{{ student.student_id }}</td> 
+<td>{{ student.surname }} {{ student.other_names }} {{ student.first_name }}</td> 
+<td><input type="number" name="ca1_{{ student.id }}" max="20"></td> 
+<td><input type="number" name="ca2_{{ student.id }}" max="20"></td> 
+<td><input type="number" name="exam_{{ student.id }}" max="60"></td> 
+<td><input type="number" name="total_{{ student.id }}" readonly></td> 
+</tr> 
+{% endfor %} 
+</tbody> 
+</table> 
+<button type="submit">Save Scores</button> 
+</form> 
+<script> 
+// Calculate total automatically 
+document.addEventListener('DOMContentLoaded', function() { 
+    const ca1Inputs = document.querySelectorAll('input[name^="ca1_"]'); 
+    const ca2Inputs = document.querySelectorAll('input[name^="ca2_"]'); 
+    const examInputs = document.querySelectorAll('input[name^="exam_"]'); 
+    const totalInputs = document.querySelectorAll('input[name^="total_"]'); 
+ 
+    ca1Inputs.forEach((input, index) => { 
+        input.addEventListener('input', function() { 
+            calculateTotal(index); 
+        }); 
+    }); 
+    ca2Inputs.forEach((input, index) => { 
+        input.addEventListener('input', function() { 
+            calculateTotal(index); 
+        }); 
+    }); 
+    examInputs.forEach((input, index) => { 
+        input.addEventListener('input', function() { 
+            calculateTotal(index); 
+        }); 
+    }); 
+ 
+    function calculateTotal(index) { 
+        const ca1Value = parseInt(ca1Inputs[index].value) || 0; 
+        const ca2Value = parseInt(ca2Inputs[index].value) || 0; 
+        const examValue = parseInt(examInputs[index].value) || 0; 
+        const totalValue = ca1Value + ca2Value + examValue; 
+        totalInputs[index].value = totalValue; 
+    } 
+}); 
+</script> 
+{% endblock %}
