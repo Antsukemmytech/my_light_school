@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpRequest
 from .models import Student, Subject, StudentClass, Result, Session
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
+from django.urls import reverse
+from django.db.models import Sum
 from .forms import StudentsForm, SubjectForm, StudentClassForm, ResultForm, SessionForm
 
 
@@ -55,48 +58,85 @@ def add_session(request):
         form = SessionForm()
     return render(request, 'add_session.html', {'form': form})
 
+@require_http_methods(["GET", "POST"])
 def add_results(request):
-    classes = StudentClass.objects.all()
-    subjects = Subject.objects.all()
-    session = Session.objects.all()
-    if request.method == 'POST':
-        class_id = request.POST.get('class')
-        subject_id = request.POST.get('subject')
-        # session_id = request.Post.get('session')
-
+    if request.method == 'POST' and 'view_students' in request.POST:
+        session_id = request.POST['session']
+        class_id = request.POST['class']
+        subject_id = request.POST['subject']
+        
+        session = Session.objects.get(id=session_id)
         student_class = StudentClass.objects.get(id=class_id)
         subject = Subject.objects.get(id=subject_id)
         students = Student.objects.filter(student_class=student_class)
-        # session = Session.objects.get(id=session_id)
-
-        for student in students:
-            ca1 = request.POST.get(f'ca1_{student.id}')
-            ca2 = request.POST.get(f'ca2_{student.id}')
-            exam = request.POST.get(f'exam_{student.id}')
-
-            # Verify that values are not None
-            if ca1 and ca2 and exam:
-                Result.objects.update_or_create(
-                    student=student,
-                    subject=subject,
-                    defaults={
-                        'ca1': ca1,
-                        'ca2': ca2,
-                        'exam': exam
-                    }
-                )
-            else:
-                # Handle missing values
-                print(f"Missing values for student {student.id}")
-
-        return redirect('students:add_results')
-
+        
+        return render(request, 'students/score_sheet.html', {
+            'session': session,
+            'student_class': student_class,
+            'subject': subject,
+            'students': students
+        })
+    
     return render(request, 'students/add_results.html', {
-        'classes': classes,
-        'subjects': subjects,
-        'sessions': session
+        'sessions': Session.objects.all(),
+        'classes': StudentClass.objects.all(),
+        'subjects': Subject.objects.all()
     })
 
+@require_http_methods(["GET", "POST"])
+def score_sheet(request, class_id, subject_id, session_id):
+    try:
+        student_class = StudentClass.objects.get(id=class_id)
+        subject = Subject.objects.get(id=subject_id)
+        session = Session.objects.get(id=session_id)
+        students = Student.objects.filter(student_class=student_class)
+        
+        # Fetch results from database
+        student_results = []
+        for student in students:
+            result = student.result_set.filter(subject=subject).first()
+            student_results.append({
+                'student': student,
+                'result': result
+            })
+
+        if request.method == 'POST':
+            for student in students:
+                result = student.result_set.filter(subject=subject).first()
+                if not result:
+                    result = Result(
+                        student=student,
+                        subject=subject,
+                        student_class=student_class,
+                        ca1=request.POST.get(f'ca1_{student.id}'),
+                        ca2=request.POST.get(f'ca2_{student.id}'),
+                        exam=request.POST.get(f'exam_{student.id}'),
+                        total=int(request.POST.get(f'ca1_{student.id}')) + 
+                              int(request.POST.get(f'ca2_{student.id}')) + 
+                              int(request.POST.get(f'exam_{student.id}'))
+                    )
+                    result.save()
+                else:
+                    result.ca1 = request.POST.get(f'ca1_{student.id}')
+                    result.ca2 = request.POST.get(f'ca2_{student.id}')
+                    result.exam = request.POST.get(f'exam_{student.id}')
+                    result.total = int(result.ca1) + int(result.ca2) + int(result.exam)
+                    result.save()
+            return redirect(reverse('score_sheet', args=[class_id, subject_id, session_id]))
+        
+        context = {
+            'student_class': student_class,
+            'subject': subject,
+            'session': session,
+            'students': student_results,
+            'has_any_result': any(student_dict['result'] for student_dict in student_results)
+        }
+        return render(request, 'score_sheet.html', context)
+    except Exception as e:
+        # Error handling
+        print(f"Error: {e}")
+        return render(request, 'error.html', {'error': str(e)})
+    
 
 def report_card(request, pk):
     """
