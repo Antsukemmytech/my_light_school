@@ -1,5 +1,6 @@
 My Light School is a web-based application designed to simplify student result management for schools. Developed by Emmanuel, this platform leverages technology to automate result compilation, reduce errors, and enhance productivity for educators.
 
+[visit the live app here](https://antsukemmy.pythonanywhere.com/)
 Features
 
 - Automated result compilation and grading
