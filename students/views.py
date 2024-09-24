@@ -89,6 +89,8 @@ def score_sheet(request, class_id, subject_id, session_id):
         student_class = StudentClass.objects.get(id=class_id)
         subject = Subject.objects.get(id=subject_id)
         session = Session.objects.get(id=session_id)
+        
+        # Fetch students for the specified class
         students = Student.objects.filter(student_class=student_class)
         
         # Fetch results from database
@@ -103,27 +105,32 @@ def score_sheet(request, class_id, subject_id, session_id):
         if request.method == 'POST':
             for student in students:
                 result = student.result_set.filter(subject=subject).first()
+                ca1 = request.POST.get(f'ca1_{student.id}', 0)
+                ca2 = request.POST.get(f'ca2_{student.id}', 0)
+                exam = request.POST.get(f'exam_{student.id}', 0)
+
                 if not result:
+                    # Create new result
                     result = Result(
                         student=student,
                         subject=subject,
                         student_class=student_class,
-                        ca1=request.POST.get(f'ca1_{student.id}'),
-                        ca2=request.POST.get(f'ca2_{student.id}'),
-                        exam=request.POST.get(f'exam_{student.id}'),
-                        total=int(request.POST.get(f'ca1_{student.id}')) + 
-                              int(request.POST.get(f'ca2_{student.id}')) + 
-                              int(request.POST.get(f'exam_{student.id}'))
+                        ca1=ca1,
+                        ca2=ca2,
+                        exam=exam,
+                        total=int(ca1) + int(ca2) + int(exam)
                     )
                     result.save()
                 else:
-                    result.ca1 = request.POST.get(f'ca1_{student.id}')
-                    result.ca2 = request.POST.get(f'ca2_{student.id}')
-                    result.exam = request.POST.get(f'exam_{student.id}')
+                    # Update existing result
+                    result.ca1 = ca1
+                    result.ca2 = ca2
+                    result.exam = exam
                     result.total = int(result.ca1) + int(result.ca2) + int(result.exam)
                     result.save()
+
             return redirect(reverse('score_sheet', args=[class_id, subject_id, session_id]))
-        
+
         context = {
             'student_class': student_class,
             'subject': subject,
@@ -133,9 +140,9 @@ def score_sheet(request, class_id, subject_id, session_id):
         }
         return render(request, 'score_sheet.html', context)
     except Exception as e:
-        # Error handling
         print(f"Error: {e}")
         return render(request, 'error.html', {'error': str(e)})
+
     
 
 def report_card(request, pk):
